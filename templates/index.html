@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneumonia and Malaria Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #6c5ce7;
+            background: -webkit-linear-gradient(135deg, #6c5ce7, #00b894);
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 1s ease;
+            display: flex;
+            justify-content: space-between;
+        }
+        h1 {
+            color: #333;
+        }
+        .box {
+            width: 45%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            font-weight: bold;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <h2>Pneumonia Detection</h2>
+            <form id="pneumoniaForm" action="/predict" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" id="pneumoniaInput" accept="image/*" required>
+                <br>
+                <input type="submit" value="Predict">
+            </form>
+            <div id="pneumoniaPreview"></div>
+            {% if pneumonia_prediction %}
+                <h2>Pneumonia Prediction: {{ pneumonia_prediction }}</h2>
+            {% elif pneumonia_error %}
+                <div class="error">{{ pneumonia_error }}</div>
+            {% endif %}
+        </div>
+        <div class="box">
+            <h2>Malaria Detection</h2>
+            <form id="malariaForm" action="/malaria_predict" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" id="malariaInput" accept="image/*" required>
+                <br>
+                <input type="submit" value="Predict">
+            </form>
+            <div id="malariaPreview"></div>
+            {% if malaria_prediction %}
+                <h2>Malaria Prediction: {{ malaria_prediction }}</h2>
+            {% elif malaria_error %}
+                <div class="error">{{ malaria_error }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        const pneumoniaInput = document.getElementById("pneumoniaInput");
+        const pneumoniaPreview = document.getElementById("pneumoniaPreview");
+        const malariaInput = document.getElementById("malariaInput");
+        const malariaPreview = document.getElementById("malariaPreview");
+
+        pneumoniaInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                pneumoniaPreview.innerHTML = ""; // Clear previous image
+                pneumoniaPreview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        });
+
+        malariaInput.addEventListener("change", function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                const img = document.createElement("img");
+                img.src = e.target.result;
+                malariaPreview.innerHTML = ""; // Clear previous image
+                malariaPreview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

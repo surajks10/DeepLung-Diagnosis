@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #6c5ce7;
+            background: -webkit-linear-gradient(135deg, #6c5ce7, #00b894);
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 1s ease;
+            display: flex; /* Added display:flex to align boxes side by side */
+            justify-content: space-between; /* Added justify-content to evenly distribute the space between boxes */
+        }
+        h1 {
+            color: #333;
+        }
+        .box {
+            width: 45%;
+            /* Removed display:inline-block and margin-right:20px */
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-weight: bold;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            line-height: 1.6;
+            font-weight: bold;
+            font-style: italic;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <h1>Pneumonia Detection</h1>
+            <h2>Prediction Result</h2>
+            <p>{{ prediction_results }}</p>
+        </div>
+        <div class="box">
+            <h1>Malaria Detection</h1>
+            <h2>Prediction Result</h2>
+            <p>{{ prediction_result }}</p>
+        </div>
+    </div>
+</body>
+</html>

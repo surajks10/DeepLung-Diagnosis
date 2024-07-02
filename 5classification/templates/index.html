@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lung Disease Classifier</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-btn {
+            padding: 10px 30px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 120px;
+            height: 40px;
+        }
+        .upload-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        #file-preview {
+            margin-top: 20px;
+        }
+        img {
+            max-width: 100%;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        #prediction {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lung Disease Classifier</h1>
+        <form id="upload-form" method="POST" action="/predict" enctype="multipart/form-data">
+            <input type="file" name="file" id="file-input">
+            <label for="file-input" class="upload-btn">Choose File</label>
+            <span id="file-name"></span>
+            <button type="submit" class="upload-btn">Predict</button>
+        </form>
+        <div id="file-preview">
+            <img id="image-preview" src="#" alt="Image Preview">
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#file-input').change(function() {
+            var fileName = $(this).val().split('\\').pop();
+            $('#file-name').text(fileName);
+
+            if (this.files && this.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#image-preview').attr('src', e.target.result);
+                    $('#image-preview').show();
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+        $('#upload-form').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $('#result').html('<div id="prediction">Prediction: ' + response + '</div><img src="data:image/jpeg;base64,' + response.image + '" alt="Predicted Image" style="margin-top: 20px;">');
+                },
+                error: function(xhr, status, error) {
+                    $('#result').text('Error- Please Select an image to Predict');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
